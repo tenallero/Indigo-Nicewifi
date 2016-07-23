@@ -358,8 +358,6 @@ class Plugin(indigo.PluginBase):
 
     def parseAirodumpProbe (self,item):
 
-        
-
         found        = False
         associated   = False
         device       = None
@@ -378,7 +376,7 @@ class Plugin(indigo.PluginBase):
 
         if not (associated):
             return
-            
+
         for device in indigo.devices.itervalues(filter="self." + deviceTypeId):    
             if device.pluginProps["address"] == address:
                 found = True
