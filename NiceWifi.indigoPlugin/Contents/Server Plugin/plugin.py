@@ -358,38 +358,45 @@ class Plugin(indigo.PluginBase):
 
     def parseAirodumpProbe (self,item):
 
-        return
-
-        found    = False
-        device   = None
-        deviceTypeId = "airodump-station"
-
-        #essid       = item["wireless-client"]["SSID"]["ssid"]
-        essid       = ""
-        macaddress  = item["wireless-client"]["client-mac"]
-        address     = macaddress
-        lastbssid   = item["BSSID"]
-        uuid        = item["wireless-client"]["client-manuf"]
         
 
+        found        = False
+        associated   = False
+        device       = None
+        deviceTypeId = "airodump-station"
+
+        essid        = ""
+        macaddress   = item["wireless-client"]["client-mac"]
+        address      = macaddress
+        lastbssid    = item["BSSID"]
+        uuid         = item["wireless-client"]["client-manuf"]
+        
+        if lastbssid == macaddress:
+            associated = False
+        else:
+            associated = True
+
+        if not (associated):
+            return
+            
         for device in indigo.devices.itervalues(filter="self." + deviceTypeId):    
             if device.pluginProps["address"] == address:
                 found = True
                 break
 
         if not found:  
-                newProps = {
-                    "deviceTypeId": deviceTypeId,
-                    "bssid": lastbssid,
-                    "essid": essid,
-                    "macaddress": macaddress,
-                    "name": "Probe." + macaddress ,
-                    "uuid": uuid,
-                    "address": address
-                    }
-                indigo.server.log ("Adding new Station: " + macaddress + " " + item["wireless-client"]["client-manuf"])
-                device = self.createdDiscoveredDevice(newProps)
-                self.addDeviceToList (device)
+            newProps = {
+                "deviceTypeId": deviceTypeId,
+                "bssid": lastbssid,
+                "essid": essid,
+                "macaddress": macaddress,
+                "name": "Probe." + macaddress ,
+                "uuid": uuid,
+                "address": address
+                }
+            indigo.server.log ("Adding new Station: " + macaddress + " " + item["wireless-client"]["client-manuf"])
+            device = self.createdDiscoveredDevice(newProps)
+            self.addDeviceToList (device)
 
         if not(device.states['onOffState']):
             self.debugLog (device.name + " is on") 
