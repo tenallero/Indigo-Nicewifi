@@ -494,7 +494,7 @@ class Plugin(indigo.PluginBase):
                     for device in indigo.devices.itervalues(filter="self.airodump"):
                         if device.states['onOffState']:
                             airodumpRun = True
-                            interval = 3 * int (int(device.pluginProps["interval"]))
+                            interval = 3 * int(device.pluginProps["interval"])
                             break
                     if airodumpRun: 
                         todayNow = datetime.datetime.now()
