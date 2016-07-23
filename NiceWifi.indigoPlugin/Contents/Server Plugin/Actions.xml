@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Actions>
+    <SupportURL>https://github.com/tenallero/Indigo-NiceWifi</SupportURL>	
+    <Action id="poweroff" deviceFilter="self">
+		<Name>Power off</Name>
+		<CallbackMethod>buttonPowerOff</CallbackMethod>
+	</Action>
+</Actions>

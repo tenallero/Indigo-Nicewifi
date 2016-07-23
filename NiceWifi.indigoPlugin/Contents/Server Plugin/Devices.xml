@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<Devices>
+    <Device type="relay" id="airodump">
+        <Name>AiroDump</Name>
+        <ConfigUI>
+            <Field id="address" type="textfield">
+                <Label>IP Address:</Label>                
+            </Field>          
+            <Field id="login" type="textfield" defaultValue="root">
+                <Label>Login:</Label>                
+            </Field>
+            <Field id="password" type="textfield" defaultValue="toor">
+                <Label>Password:</Label>               
+            </Field>  
+            <Field id="interval" type="textfield" defaultValue="30">
+                <Label>Interval:</Label>               
+            </Field> 
+            
+        </ConfigUI>
+    </Device>
+    <Device type="relay" id="aireplay">
+        <Name>AirReplay</Name>
+        <ConfigUI>
+            <Field id="address" type="textfield">
+                <Label>IP Address:</Label>                
+            </Field>          
+            <Field id="login" type="textfield" defaultValue="root">
+                <Label>Login:</Label>                
+            </Field>
+            <Field id="password" type="textfield" defaultValue="toor">
+                <Label>Password:</Label>               
+            </Field>  
+            <Field id="bssiddevice" type="menu" >
+                <Label>BSSID:</Label>
+                <List class="self" method="menuGetDevsBssid" dynamicReload="yes" />
+            </Field>
+        </ConfigUI>
+    </Device>
+    <Device type="relay" id="nanostation">
+        <Name>NanoStation</Name>
+        <ConfigUI>
+            <Field id="address" type="textfield">
+                <Label>IP Address:</Label>                
+            </Field>          
+            <Field id="login" type="textfield" defaultValue="root">
+                <Label>Login:</Label>                
+            </Field>
+            <Field id="password" type="textfield" defaultValue="toor">
+                <Label>Password:</Label>               
+            </Field>  
+            <Field id="bssiddevice" type="menu" >
+                <Label>BSSID:</Label>
+                <List class="self" method="menuGetDevsBssid" dynamicReload="yes" />
+            </Field>
+        </ConfigUI>
+    </Device>
+    <Device type="sensor" id="airodump-station">
+        <Name>Station</Name>
+        <ConfigUI>
+            <SupportURL>https://github.com/tenallero/Indigo-NiceWifi</SupportURL>      
+            <Field id="macaddress" type="textfield" readonly="YES">
+                <Label>MAC Station:</Label>                
+            </Field>
+        </ConfigUI>
+        <States>
+            <State id="lastbssid">
+               <ValueType>string</ValueType>   
+               <TriggerLabel>Last BSSID</TriggerLabel>
+                <ControlPageLabel>Last BSSID</ControlPageLabel>                   
+            </State>
+            <State id="lastessid">
+               <ValueType>string</ValueType>   
+               <TriggerLabel>Last ESSID</TriggerLabel>
+                <ControlPageLabel>Last ESSID</ControlPageLabel>                   
+            </State>
+            <State id="power">
+                <ValueType>Number</ValueType>     
+                 <TriggerLabel>Power</TriggerLabel>
+                 <ControlPageLabel>Power</ControlPageLabel>
+            </State>
+            <State id="manufacturer">
+                <ValueType>String</ValueType> 
+                <TriggerLabel>Manufacturer</TriggerLabel>
+                <ControlPageLabel>Manufacturer</ControlPageLabel>              
+            </State> 
+            <State id="associated" defaultValue="No">
+                <ValueType boolType="YesNo">Boolean</ValueType> 
+                 <TriggerLabel>Associated</TriggerLabel>
+                 <ControlPageLabel>Associated</ControlPageLabel>                     
+            </State>  
+            <State id="probes">
+                <ValueType>string</ValueType> 
+                <TriggerLabel>Probes</TriggerLabel>
+                <ControlPageLabel>Probes</ControlPageLabel>    
+            </State>
+        </States>
+    </Device>    
+
+    <Device type="sensor" id="airodump-bssid">
+        <Name>BSSID</Name>
+        <ConfigUI>
+            <SupportURL>https://github.com/tenallero/Indigo-NiceWifi</SupportURL>           
+            <Field id="bssid" type="textfield" readonly="YES">
+                <Label>BSSID:</Label>                
+            </Field>
+        </ConfigUI>
+        <UiDisplayStateId>state</UiDisplayStateId>
+        <States>
+            <State id="essid">
+                <ValueType>String</ValueType> 
+                <TriggerLabel>ESSID</TriggerLabel>
+                <ControlPageLabel>ESSID</ControlPageLabel>              
+            </State>
+            <State id="hiddenessid" defaultValue="No">
+                <ValueType boolType="YesNo">Boolean</ValueType> 
+                 <TriggerLabel>Hidden ESSID</TriggerLabel>
+                 <ControlPageLabel>Hidden ESSID</ControlPageLabel>                     
+            </State>  
+            <State id="power">
+                <ValueType>Number</ValueType> 
+                <TriggerLabel>Power</TriggerLabel>
+                <ControlPageLabel>Power</ControlPageLabel>     
+            </State>
+            <State id="channel">
+                 <ValueType>Number</ValueType> 
+                 <TriggerLabel>Channel</TriggerLabel>
+                 <ControlPageLabel>Channel</ControlPageLabel>               
+            </State>
+            <State id="band5ghz" defaultValue="No">
+                <ValueType boolType="YesNo">Boolean</ValueType> 
+                 <TriggerLabel>5 Ghz</TriggerLabel>
+                 <ControlPageLabel>5 Ghz</ControlPageLabel>               
+            </State>     
+            <State id="cipher">
+                <ValueType>String</ValueType>
+                <TriggerLabel>Cypher</TriggerLabel>
+                <ControlPageLabel>Cypher</ControlPageLabel>                  
+            </State>
+            <State id="wps" defaultValue="No">
+                <ValueType boolType="YesNo">Boolean</ValueType> 
+                 <TriggerLabel>WPS</TriggerLabel>
+                 <ControlPageLabel>WPS</ControlPageLabel>                        
+            </State>          
+            <State id="manufacturer">
+                <ValueType>String</ValueType> 
+                <TriggerLabel>Manufacturer</TriggerLabel>
+                <ControlPageLabel>Manufacturer</ControlPageLabel>              
+            </State> 
+        </States>
+    </Device>
+</Devices>
