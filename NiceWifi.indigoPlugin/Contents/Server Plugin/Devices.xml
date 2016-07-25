@@ -15,6 +15,14 @@
             <Field id="interval" type="textfield" defaultValue="30">
                 <Label>Interval:</Label>               
             </Field> 
+
+            
+            <Field id="bandg" type="checkbox"  defaultValue="true">
+		        <Label>Banda G</Label>
+	        </Field>
+            <Field id="banda" type="checkbox"  defaultValue="false">
+		        <Label>Banda A</Label>
+	        </Field>
             
         </ConfigUI>
     </Device>

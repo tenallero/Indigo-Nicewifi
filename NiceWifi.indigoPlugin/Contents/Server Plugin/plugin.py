@@ -537,6 +537,18 @@ class Plugin(indigo.PluginBase):
         interval    = int(device.pluginProps["interval"])
         if not(interval > 1):
             interval = 30
+
+        band_g      = device.pluginProps["bandg"]
+        band_a      = device.pluginProps["banda"]
+        band        = ""
+
+        if band_g:
+            band = band + "bg"
+        if band_a:
+            band = band + "a"
+        if band:
+            band = ' --band ' + band + ' ' 
+
         try:
             session = pxssh.pxssh()
             if not session.login (ipaddress, login, password):
@@ -558,7 +570,7 @@ class Plugin(indigo.PluginBase):
                 session.sendline ('cd /root/node-airodump-parser/data');session.prompt()
                 session.sendline ('rm dump*');session.prompt()
                 self.debugLog    ("Starting airodump-ng ...")
-                session.sendline ('(airodump-ng --manufacturer --wps --output-format netxml --write-interval ' + str(interval) + ' --write dump wlan0mon >/dev/null 2>&1) &');session.prompt()
+                session.sendline ('(airodump-ng ' + band + ' --manufacturer --wps --output-format netxml --write-interval ' + str(interval) + ' --write dump wlan0mon >/dev/null 2>&1) &');session.prompt()
                 session.sendline ('cd /root/node-airodump-parser/');session.prompt()
                 self.debugLog    ("Starting nodejs ...")
                 session.sendline ('(NODE_ENV=dev node app.js >/dev/null 2>&1) &');session.prompt()
