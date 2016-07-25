@@ -404,9 +404,7 @@ class Plugin(indigo.PluginBase):
 
 
         self.updateDeviceState(device,'manufacturer',item["wireless-client"]["client-manuf"])
-        #self.updateDeviceState(device,'power',int(item["snr-info"]["max_sign
-        
-        al_rssi"]))
+        #self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
         if lastbssid == macaddress:
             self.updateDeviceState(device,'associated','No')
         else:
