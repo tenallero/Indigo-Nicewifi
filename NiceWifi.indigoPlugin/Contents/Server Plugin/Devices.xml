@@ -18,10 +18,10 @@
 
             
             <Field id="bandg" type="checkbox"  defaultValue="true">
-		        <Label>Banda G</Label>
+		        <Label>Band G (2 Ghz)</Label>
 	        </Field>
             <Field id="banda" type="checkbox"  defaultValue="false">
-		        <Label>Banda A</Label>
+		        <Label>Band A (5 Ghz)</Label>
 	        </Field>
             
         </ConfigUI>

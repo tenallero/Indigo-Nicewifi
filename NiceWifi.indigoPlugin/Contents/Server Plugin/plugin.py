@@ -252,6 +252,7 @@ class Plugin(indigo.PluginBase):
                 }
             indigo.server.log ("Adding new BSSID: " + bssid + " " + essid )
             device = self.createdDiscoveredDevice(newProps)
+            self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
             self.addDeviceToList (device)
 
 
@@ -273,7 +274,7 @@ class Plugin(indigo.PluginBase):
         else:
             self.updateDeviceState(device,'band5ghz','No')
         self.updateDeviceState(device,'manufacturer',item["manuf"])
-        self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
+        
 
         try:
             if isinstance(item["wireless-client"],list):
@@ -390,6 +391,9 @@ class Plugin(indigo.PluginBase):
                 }
             indigo.server.log ("Adding new Station: " + macaddress + " " + item["wireless-client"]["client-manuf"])
             device = self.createdDiscoveredDevice(newProps)
+
+            #self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
+    
             self.addDeviceToList (device)
 
         if not(device.states['onOffState']):
@@ -400,7 +404,9 @@ class Plugin(indigo.PluginBase):
 
 
         self.updateDeviceState(device,'manufacturer',item["wireless-client"]["client-manuf"])
-        self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
+        #self.updateDeviceState(device,'power',int(item["snr-info"]["max_sign
+        
+        al_rssi"]))
         if lastbssid == macaddress:
             self.updateDeviceState(device,'associated','No')
         else:
