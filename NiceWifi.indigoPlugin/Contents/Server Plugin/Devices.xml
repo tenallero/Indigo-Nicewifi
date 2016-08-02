@@ -111,6 +111,9 @@
             <Field id="bssid" type="textfield" readonly="YES">
                 <Label>BSSID:</Label>                
             </Field>
+            <Field type="checkbox" id="storeclients" defaultValue="false">
+                <Label>Store associated clientes:</Label>
+            </Field>
         </ConfigUI>
         <UiDisplayStateId>state</UiDisplayStateId>
         <States>

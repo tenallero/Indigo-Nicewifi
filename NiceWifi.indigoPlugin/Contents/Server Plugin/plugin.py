@@ -57,17 +57,18 @@ class httpHandler(BaseHTTPRequestHandler):
 
             self.plugin.debugLog(u"HTTP Server: Received HTTP " + self.command + " request from '" + ipaddress + "'")
 
-            #timestr = time.strftime("%Y%m%d-%H%M%S")
-            #f = open('/Users/canteula/Airodump-' + timestr + '.json',mode='w')
-            #f.write(body)
-            #f.close()
-
+            #self.storeReceivedBody(body)
             self.plugin.parseAirodumpMessage(body)
-
 
         except Exception, e:
             self.plugin.errorLog(u"HTTP Server: Error: " + str(e))
         return
+
+    def storeReceivedBody(self,body):
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        f = open('/Users/canteula/Airodump-' + timestr + '.json',mode='w')
+        f.write(body)
+        f.close()
 
 class Plugin(indigo.PluginBase):
     def __init__(self, pluginId, pluginDisplayName, pluginVersion, pluginPrefs):
@@ -84,6 +85,7 @@ class Plugin(indigo.PluginBase):
         self.sock = None
 
         self.CreatingDevice = False
+        self.StoreProbes = False
 
     def __del__(self):
         indigo.PluginBase.__del__(self)
@@ -95,6 +97,11 @@ class Plugin(indigo.PluginBase):
 
     def deviceStartComm(self, device):
         self.debugLog(device.name + ": Starting device")
+        if device.deviceTypeId == "airodump-bssid":
+            if not device.pluginProps.has_key("storeclients"):
+                devProps = device.pluginProps
+                devProps["storeclients"] = False
+                device.replacePluginPropsOnServer(devProps)
         self.addDeviceToList(device)
 
     def addDeviceToList(self, device):
@@ -145,7 +152,7 @@ class Plugin(indigo.PluginBase):
             self.debug = False
 
         self.httpServerPort   = int (self.pluginPrefs.get('httpserverport',8687))
-
+        self.StoreProbes      = self.pluginPrefs.get('storeprobes',False)
         self.reqTimeout = 8
 
     def menuGetDevsBssid(self, filter, valuesDict, typeId, elemId):
@@ -275,6 +282,8 @@ class Plugin(indigo.PluginBase):
             self.updateDeviceState(device,'band5ghz','No')
         self.updateDeviceState(device,'manufacturer',item["manuf"])
         
+        if device.pluginProps["storeclients"] == False:
+            return
 
         try:
             if isinstance(item["wireless-client"],list):
@@ -355,6 +364,8 @@ class Plugin(indigo.PluginBase):
         return
 
     def parseAirodumpProbe (self,item):
+
+
         found        = False
         associated   = False
         device       = None
@@ -378,6 +389,10 @@ class Plugin(indigo.PluginBase):
             if device.pluginProps["address"] == address:
                 found = True
                 break
+
+        if not found:
+            if not (self.StoreProbes):
+                return
 
         if not found:
             newProps = {
@@ -511,7 +526,7 @@ class Plugin(indigo.PluginBase):
                                     self.debugLog (device.name + " turn off")
                                     device.updateStateOnServer(key='onOffState', value=False)
 
-                self.sleep(1)
+                self.sleep(0.250)
 
         except self.StopThread:
             # cleanup
