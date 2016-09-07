@@ -234,6 +234,7 @@ class Plugin(indigo.PluginBase):
 
         bssid    = item["BSSID"]
         address  = bssid
+        rssiChanged = False
 
         if item["SSID"]["essid"]["cloaked"]:
             essid = "(hidden)"
@@ -242,6 +243,8 @@ class Plugin(indigo.PluginBase):
             essid = item["SSID"]["essid"]["$t"]
             essid = essid.strip()
             name  = "BSSID." + essid + '.' + bssid
+
+        rssi = int(item["snr-info"]["max_signal_rssi"])
 
         for device in indigo.devices.itervalues(filter="self." + deviceTypeId):
             if device.pluginProps["address"] == address:
@@ -259,13 +262,20 @@ class Plugin(indigo.PluginBase):
                 }
             indigo.server.log ("Adding new BSSID: " + bssid + " " + essid )
             device = self.createdDiscoveredDevice(newProps)
-            self.updateDeviceState(device,'power',int(item["snr-info"]["max_signal_rssi"]))
+            rssiChanged = True
             self.addDeviceToList (device)
 
-
-        if not(device.states['onOffState']):
+        if not(int(device.states['power']) == rssi):
+            rssiChanged = True
+            self.updateDeviceState(device,'power',int(rssi))
+        uiValue = str(rssi) + ' db'
+        if (device.states['onOffState']):
+            if rssiChanged:
+                device.updateStateOnServer(key='onOffState', value=True, uiValue=uiValue)
+        else:
             self.debugLog (device.name + " is on")
-            device.updateStateOnServer(key='onOffState', value=True)
+            device.updateStateOnServer(key='onOffState', value=True, uiValue=uiValue)
+        
         self.deviceList[device.id]['lastTimeSensor'] =  datetime.datetime.now()
 
         if item["SSID"]["essid"]["cloaked"]:
